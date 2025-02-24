@@ -1,12 +1,12 @@
 FROM python:3.11.5
 
-
 WORKDIR /app
-# copy to container
-COPY requirements.txt /app
 
-# install the dependancies
-RUN pip install -r requirements.txt
+# Copy everything first to leverage Docker caching
+COPY . /app
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Entry point
 CMD ["python", "app.py", "dev"]

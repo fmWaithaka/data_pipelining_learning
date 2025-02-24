@@ -1,15 +1,7 @@
-from numpy.distutils.fcompiler.gnu import TARGET_R
+import logging
 
 from util import get_connection
 
-# def build_insert_query(table_name, column_names):
-#     column_values = tuple(map(lambda column: column.replace(column, '%s'), column_names))
-#
-#     query = (f'''
-#     INSERT INTO P={table_name} {column_names} VALUES ({column_values}
-#     ''')
-#
-#     return query
 
 def build_insert_query(table_name, column_names):
     """Generate an SQL INSERT query for the given tables and columns"""
@@ -44,7 +36,7 @@ def insert_data(connection, cursor, query, data, batch_size=100):
             connection.commit()
     except Exception as e:
         connection.rollback()
-        print(f"Error occurred while inserting data: {e}")
+        logging.error(f"Error occurred while inserting data: {e}")
         raise
     finally:
         if cursor:
