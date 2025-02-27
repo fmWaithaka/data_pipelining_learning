@@ -48,26 +48,6 @@ def get_pg_connection(db_host, db_name, db_user, db_pass):
     return None
 
 
-# def get_connection(db_type, db_host, db_name, db_user, db_pass):
-#     """Get a database connection based on the database type."""
-#     connection = None
-#     if db_type == 'mysql':
-#         connection = get_mysql_connection(
-#             db_host=db_host,
-#             db_name=db_name,
-#             db_user=db_user,
-#             db_pass=db_pass
-#         )
-#     elif db_type == 'postgres':
-#         connection = get_pg_connection(
-#             db_host=db_host,
-#             db_name=db_name,
-#             db_user=db_user,
-#             db_pass=db_pass
-#         )
-#     else:
-#         print(f"Unsupported database type: {db_type}")
-#     return connection
 
 DB_CONNECTIONS = {
     'mysql': get_mysql_connection,
@@ -83,15 +63,21 @@ def get_connection(db_type, db_host, db_name, db_user, db_pass):
     return None
 
 
-
-
-def get_tables(path, sep=","):
+def get_tables(path, table_list):
     try:
-        tables = pd.read_csv(path, sep=sep)
-        if "to_be_loaded" not in tables.columns:
-            logging.error("Missing 'to_be_loaded' column in tables_list file.")
-            return None
-        return tables.query('to_be_loaded == "yes"')
+        tables = pd.read_csv(path, sep=",")
+
+        if table_list == "all":
+            return tables.query('to_be_loaded == "yes"')
+
+        # Convert table_list (comma-separated string) into a DataFrame
+        table_list_df = pd.DataFrame({'table_name': table_list.split(',')})
+
+        # Merge instead of join for proper filtering
+        filtered_tables = tables.merge(table_list_df, on='table_name', how='inner')
+
+        return filtered_tables.query('to_be_loaded == "yes"')
+
     except Exception as e:
         logging.error(f"Error reading tables file: {e}")
         return None
