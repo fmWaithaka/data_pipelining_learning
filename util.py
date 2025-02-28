@@ -6,9 +6,9 @@ import psycopg2
 import logging
 
 logging.basicConfig(
-    filename="dataPipeline.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %([message])s"
+    filename="dataPipeline.erro",
+    level=logging.ERROR,
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 
