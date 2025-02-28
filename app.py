@@ -49,12 +49,12 @@ def main():
         a_tables = sys.argv[2]
         db_details = get_db_config(env)
         tables = get_tables('tables_list', a_tables)
-        logging.info(f"Tables to process: {tables['table_name'].tolist()}")
+        print(f"Tables to process: {tables['table_name'].tolist()}")
         for table_name in tables['table_name']:
             try:
-                logging.info(f'Reading data for {table_name}')
+                print(f'Reading data for {table_name}')
                 data, column_names = read_table(db_details, table_name)
-                logging.info(f'Loading data for {table_name}')
+                print(f'Loading data for {table_name}')
                 load_table(db_details, data, column_names, table_name)
             except Exception as e:
                 logging.error(f"Error processing {table_name}: {str(e)}", exc_info=True)
