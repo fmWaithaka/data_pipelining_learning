@@ -12,7 +12,7 @@ logging.basicConfig(filename="dataPipeline.error", level=logging.ERROR, format="
 # def load_db_details(env):
 #     """Fetch database connection details for the given environment."""
 #     return DB_DETAILS.get(env)
-
+q
 def get_db_config(env='dev'):
     """Fetch database connection details for the given environment."""
     return DB_DETAILS.get(env, {})

@@ -9,12 +9,12 @@ DB_DETAILS = {
             'DB_USER': os.environ.get('SOURCE_DB_USER', 'retail_user'),
             'DB_PASS': os.environ.get('SOURCE_DB_PASS', 'itversity')
         },
-        'TARGET_DB': {
+        'CUSTOMER': {
             'DB_TYPE': 'postgres',
             'DB_HOST': 'host.docker.internal',
             'DB_NAME': 'retail_db',
-            'DB_USER': os.environ.get('TARGET_DB_USER', 'retail_user'),
-            'DB_PASS': os.environ.get('TARGET_DB_PASS', 'itversity')
+            'DB_USER': os.environ.get('CUSTOMER_DB_USER', 'retail_user'),
+            'DB_PASS': os.environ.get('CUSTOMER_DB_PASS', 'itversity')
         }
     }
 }
