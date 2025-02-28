@@ -8,11 +8,12 @@ logging.basicConfig(
     filename="dataPipeline.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    filemode="w"
+    filemode="a"
 )
 
 logging.info("Logging setup complete.")
 
+print("Hey")
 def main():
     env = sys.argv[1]
     a_tables = sys.argv[2]
@@ -24,6 +25,7 @@ def main():
         logging.info(f'loading data for {table_name}')
         load_table(db_details, data, column_names, table_name)
 
+print("Bye")
 
 if __name__=='__main__':
     main()
