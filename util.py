@@ -1,17 +1,17 @@
 import pandas as pd
 from mysql import connector as mc
 from config import DB_DETAILS
-from mysql.connector import errorcode as ec
 import psycopg2
 
 import logging
-logging.basicConfig(filename="dataPipeline.error", level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
+
+logging.basicConfig(
+    filename="dataPipeline.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %([message])s"
+)
 
 
-
-# def load_db_details(env):
-#     """Fetch database connection details for the given environment."""
-#     return DB_DETAILS.get(env)
 def get_db_config(env='dev'):
     """Fetch database connection details for the given environment."""
     return DB_DETAILS.get(env, {})

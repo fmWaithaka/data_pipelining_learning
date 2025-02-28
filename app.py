@@ -5,8 +5,11 @@ from read import read_table
 from write import load_table
 
 # Configure logging
-logging.basicConfig(filename="dataPipeline.info", level=logging.INFO, format="%(asctime)s - %(levelname)s - %([message])s")
-
+logging.basicConfig(
+    filename="dataPipeline.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 def main():
     env = sys.argv[1]
