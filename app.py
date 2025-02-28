@@ -61,7 +61,7 @@ def main():
     except IndexError:
         print("Missing command-line arguments. Usage: script.py <env> <a_tables>")
     except Exception as e:
-        logging.error(f"Unexpected error: {str(e)}", exc_info=True)
+        print(f"Unexpected error: {str(e)}", exc_info=True)
 
 if __name__ == '__main__':
     try:
