@@ -4,12 +4,14 @@ from util import get_tables, get_db_config
 from read import read_table
 from write import load_table
 
-# Configure logging
 logging.basicConfig(
     filename="dataPipeline.log",
     level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filemode="w"
 )
+
+logging.info("Logging setup complete.")
 
 def main():
     env = sys.argv[1]
