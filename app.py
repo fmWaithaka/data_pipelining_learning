@@ -59,7 +59,7 @@ def main():
             except Exception as e:
                 logging.error(f"Error processing {table_name}: {str(e)}", exc_info=True)
     except IndexError:
-        logging.error("Missing command-line arguments. Usage: script.py <env> <a_tables>")
+        print("Missing command-line arguments. Usage: script.py <env> <a_tables>")
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}", exc_info=True)
 
