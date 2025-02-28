@@ -5,7 +5,8 @@ from mysql.connector import errorcode as ec
 import psycopg2
 
 import logging
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(filename="dataPipeline.error", level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 
 # def load_db_details(env):
