@@ -23,7 +23,6 @@ import pandas as pd
 import os
 import logging
 
-# Configure logging
 logging.basicConfig(
     filename="dataPipeline.log",
     level=logging.INFO,
