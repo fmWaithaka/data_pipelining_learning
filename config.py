@@ -2,7 +2,7 @@ import os
 
 DB_DETAILS = {
     'dev': {
-        'SOURCE_DB': {
+        'RETAIL_DB': {
             'DB_TYPE': 'mysql',
             'DB_HOST': 'host.docker.internal',
             'DB_NAME': 'retail_db',
