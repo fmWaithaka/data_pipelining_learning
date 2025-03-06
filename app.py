@@ -77,12 +77,11 @@ from write import write_df_to_file
 LOG_FILE = "dataPipeline.log"
 
 logging.basicConfig(
+    filename="dataPipeline.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler(LOG_FILE, mode="a"),
-        logging.StreamHandler(sys.stdout)  # Logs to console as well
-    ]
+    filemode="a",
+    force=True
 )
 
 logging.info("Logging setup complete.")
