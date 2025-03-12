@@ -10,7 +10,7 @@ DB_DETAILS = {
             'DB_USER': os.environ.get('RETAIL_DB_USER'),
             'DB_PASS': os.environ.get('RETAIL_DB_PASS')
         },
-        'CUSTOMER': {
+        'CUSTOMER_DB': {
             'DB_TYPE': 'postgres',
             # 'DB_HOST': 'host.docker.internal',
             'DB_HOST': '127.0.0.1',
