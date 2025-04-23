@@ -1,67 +1,68 @@
 import logging
 import sys
-import pandas as pd
 
-from util import get_db_config
+from util import get_tables, load_db_details
 from read import read_table
-from write import write_df_to_file
+from write import load_table
 
-# Set up logging with both file and console output
+# Setup logging as before
 LOG_FILE = "dataPipeline.log"
-
 logging.basicConfig(
-    filename="dataPipeline.log",
+    filename=LOG_FILE,
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     filemode="a",
     force=True
 )
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console.setFormatter(formatter)
+logging.getLogger('').addHandler(console)
 
-logging.info("Logging setup complete.")
 
 def validate_arguments():
-    """Ensure correct script usage and required arguments."""
-    if len(sys.argv) < 4:
-        logging.error("Usage: python script.py <env> <database> <table>")
+    if len(sys.argv) < 3:
+        logging.error("Usage: python app.py <env> <table_list> (or 'all')")
         sys.exit(1)
+
 
 def main():
-    """
-    Main function to read data from a database table and write it to a file.
-    Handles errors gracefully.
-    """
     validate_arguments()
 
-    env, a_database, a_table = sys.argv[1], sys.argv[2], sys.argv[3]
+    env = sys.argv[1]
+    table_arg = sys.argv[2]
 
-    try:
-        db_config = get_db_config(env)
-        if not db_config:
-            logging.error(f"Invalid environment: {env}")
-            sys.exit(1)
-
-        if a_database not in db_config:
-            logging.error(f"Database '{a_database}' not found in config.")
-            sys.exit(1)
-
-        db_details = db_config[a_database]
-        logging.info(f"Fetching data for table '{a_table}' from database '{a_database}'.")
-
-        data, column_names = read_table(db_details, a_table)
-        if not data:
-            logging.warning(f"No data retrieved for table '{a_table}'.")
-            sys.exit(1)
-
-        df = pd.DataFrame(data, columns=column_names)
-
-        output_path = "/tmp"
-        write_df_to_file(output_path, table_name=a_table, df=df)
-        logging.info(f"Data successfully written to {output_path}/{a_table}.csv")
-
-    except Exception as e:
-        logging.error(f"Unexpected error: {e}", exc_info=True)
+    logging.info("Loading DB configuration...")
+    db_config = load_db_details(env)
+    if not db_config:
+        logging.error("Failed to load DB configuration.")
         sys.exit(1)
+
+    source_db = db_config.get("SOURCE_DB")
+    target_db = db_config.get("TARGET_DB")
+    if not (source_db and target_db):
+        logging.error("Missing SOURCE_DB or TARGET_DB configuration.")
+        sys.exit(1)
+
+    logging.info("Retrieving table list...")
+    tables_df = get_tables("tables_list", table_arg)
+    if tables_df is None or tables_df.empty:
+        logging.error("No tables found to process.")
+        sys.exit(1)
+
+    for table_name in tables_df["table_name"]:
+        logging.info(f"Reading data from table: {table_name}")
+        data, column_names = read_table(source_db, table_name)
+        if data is None or len(data) == 0:
+            logging.warning(f"No data found in table: {table_name}")
+            continue
+
+        logging.info(f"Loading data into target for table: {table_name}")
+        load_table(db_config, data, column_names, table_name)
+
+    logging.info("Pipeline completed successfully.")
+
 
 if __name__ == "__main__":
     main()
-
